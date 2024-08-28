@@ -1,0 +1,2 @@
+class FatModel < ApplicationRecord
+end
