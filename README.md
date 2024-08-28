@@ -4,6 +4,9 @@ How fast can we get at rendering a Model's database column as JSON?
 
 In this minimal Rails app, I tried to find out.
 
+See this card for the corresponding write-up:
+<https://makandracards.com/makandra/622390-speed-json-rendering-rails>
+
 ## Setup
 * `bundle install`
 * `bin/rails db:create db:migrate db:seed` <-- this will generate a ~500MB sized table and thus take a while
