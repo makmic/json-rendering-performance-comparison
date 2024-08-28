@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'active_support'
+require_relative '../app/models/constants.rb'
+ITERATIONS = 20
+
+strategies_sorted_by_performance = {}
+
+Constants::ACTIONS.each do |action|
+   puts "measuring average performance of #{action} for #{ITERATIONS} iterations.."
+   start_time = Time.now
+   ITERATIONS.times do
+    `curl http://127.0.0.1:3000/fat_models/#{action}.json > /dev/null -s`
+   end
+   ms = (Time.now - start_time).to_f / ITERATIONS * 1_000
+   strategies_sorted_by_performance[ms] = action
+   puts "  ⌀ #{ms.round(2)} milliseconds"
+end
+
+puts
+puts
+puts
+puts "########### Results ###########"
+strategies_sorted_by_performance = strategies_sorted_by_performance.sort_by(&:first).reverse
+slowest = strategies_sorted_by_performance.first
+puts "                slowest action with #{slowest.first.round(2)}ms (#{slowest.last})"
+
+strategies_sorted_by_performance.each_cons(2) do |previous_action, current_action|
+  puts "#{(previous_action.first / current_action.first).round(1)} times faster than previous with #{current_action.first.round(2)}ms (#{current_action.last})"
+end

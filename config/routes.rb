@@ -3,14 +3,9 @@ Rails.application.routes.draw do
 
   resource :fat_models, only: [:index] do
     collection do
-      get :jbuilder
-      get :render_json
-      get :select_json
-      get :indexed_json
-      get :plucked
-      get :db_live_computed
-      get :parsed_materialized_view
-      get :raw_materialized_view
+      Constants::ACTIONS.each do |action|
+        get action
+      end
     end
   end
 end
